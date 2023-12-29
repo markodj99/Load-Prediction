@@ -15,8 +15,6 @@ function App()
         )
     }, []);
 
-    console.log(data)
-
     return (
             <div>
               <p>{JSON.stringify(data)}</p>
