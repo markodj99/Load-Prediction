@@ -1,24 +1,12 @@
-import React, {useState, useEffect} from "react";
+//import React, {useState, useEffect} from "react";
+import SendTrainingDataButton from "./components/SendTrainingDataButton";
 
 function App()
 {
-    const [data, setData] = useState([{}]);
-
-    useEffect(() => {
-        fetch("/test").then(
-            res => res.json()
-        ).then(
-            data => {
-              setData(data)
-              console.log(data)
-            }
-        )
-    }, []);
-
-    return (
-            <div>
-              <p>{JSON.stringify(data)}</p>
-            </div>
+  return (
+          <div>
+            <SendTrainingDataButton/>
+          </div>
           );
 }
 
