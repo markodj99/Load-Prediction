@@ -13,11 +13,11 @@ function SendTrainingDataButton() {
     getFilesFromEvent: event => getFiles(event)
   });
 
-  const files = acceptedFiles.map(f => (
+  /*const files = acceptedFiles.map(f => (
     <li key={f.name}>
       {f.name}
     </li>
-  ));
+  ));*/
 
   const handleSendTrainingFiles = async () => {
     const uploadEndpoint = 'http://localhost:5000/uploadTrainingFiles';
@@ -56,8 +56,7 @@ function SendTrainingDataButton() {
       </div>
       <button onClick={handleSendTrainingFiles}>Send Training Data</button>
       <aside>
-        <h4>Files</h4>
-        <ul>{files}</ul>
+        <h4>{acceptedFiles.length} files will uploaded</h4>
       </aside>
     </section>
   );
