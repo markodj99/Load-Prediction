@@ -122,3 +122,15 @@ def normalizeMissingValue(dataFrame):
 
     return dataFrame
 
+
+def loadData(dataBaseName):
+    connection = sqlite3.connect(dataBaseName)
+    dataFrame = pd.read_sql_query('SELECT * FROM Load', connection)
+    connection.close()
+
+    dataFrame = dataFrame.drop('index', axis=1)
+    dataFrame = dataFrame.drop('name', axis=1)
+    dataFrame = dataFrame.drop('date', axis=1)
+    #dataFrame['date'] = pd.to_datetime(dataFrame['date'], format='%Y-%m-%d %H:%M:%S')
+
+    return dataFrame
