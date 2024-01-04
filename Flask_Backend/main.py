@@ -2,12 +2,14 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import re
-from dataLoader import loadHolidays
+from proccessData import invokeProccessing
+
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024
 app.config['REQUEST_TIMEOUT'] = 30
 CORS(app, origins="http://localhost:3000")
+DATABASE_NAME = 'database/loadDataBase.db'
 
 
 @app.route('/uploadTrainingFiles', methods=['POST'])
@@ -37,10 +39,11 @@ def uploadTrainingFiles():
 def prepareTrainingData():
     upload_folder = os.path.join(app.root_path, 'rawTrainingData')
     loadDataPath = os.path.join(upload_folder, 'loadData')
-    watherDataPath = os.path.join(upload_folder, 'weatherData')
-    holidayDataPath = os.path.join(upload_folder, 'holidays')
-    print(holidayDataPath)
-    a = loadHolidays(holidayDataPath)
+    weatherDataPath = os.path.join(upload_folder, 'weatherData')
+    holidaysDataPath = os.path.join(upload_folder, 'holidays')
+
+    trainingData = invokeProccessing(loadDataPath, weatherDataPath, holidaysDataPath, DATABASE_NAME)
+    print(trainingData)
 
     return jsonify({"allGood": "all good"})
 

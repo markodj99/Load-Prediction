@@ -36,6 +36,7 @@ def loadWeatherData(weatherDataPath, minDate, maxDate):
 
     return dataFrame
 
+
 def loadHolidays(holidaysDataPath):
     dataFrame = pd.DataFrame()
 
@@ -46,7 +47,8 @@ def loadHolidays(holidaysDataPath):
     dataFrame = dataFrame.drop('day', axis=1)
     dataFrame = dataFrame.drop('event', axis=1)
     dataFrame = dataFrame.drop('nan', axis=1)
-    dataFrame['date'] = pd.to_datetime(dataFrame['date'], format='%Y-%m-%d')
+    dataFrame = dataFrame.dropna(subset=['date'])
+    dataFrame['date'] = pd.to_datetime(dataFrame['date']).dt.strftime('%Y-%m-%d')
 
     return dataFrame 
 
