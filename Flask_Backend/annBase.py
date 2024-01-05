@@ -110,9 +110,6 @@ class AnnBase:
     #selu
     #elu
     #exponential
-    @property
-    def activation_function(self):
-        return self._activation_function
 
     @activation_function.setter
     def activation_function(self, value):

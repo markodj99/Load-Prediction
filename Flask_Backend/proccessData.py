@@ -1,5 +1,6 @@
 from dataLoader import *
 import sqlite3
+import numpy as np
 
 
 def invokeProccessing(loadDataPath, weatherDataPath, holidaysDataPath, dataBaseName):
@@ -13,6 +14,7 @@ def invokeProccessing(loadDataPath, weatherDataPath, holidaysDataPath, dataBaseN
     trainingData = createDayTypeColumn(trainingData)
     trainingData = normalizeMissingValue(trainingData)
     trainingData = createLoadColumnForPrevDay(trainingData)
+    trainingData = createHourColumn(trainingData)
 
     saveProccessedDataToDb(trainingData, dataBaseName)
 
@@ -56,7 +58,7 @@ def removeHolidays(dataFrame, holidaysDataPath):
 
 def dropWeatherFeatures(dataFrame):
     featureDrop = ['dew', 'precip', 'precipprob', 'preciptype', 'snow', 'snowdepth', 
-                   'sealevelpressure', 'visibility', 'solarradiation', 'solarenergy',
+                   'sealevelpressure', 'visibility', 'solarenergy',
                    'uvindex', 'severerisk', 'feelslike', 'windgust', 'winddir', 'conditions']
     dataFrame = dataFrame.drop(featureDrop, axis=1)
     return dataFrame
@@ -66,6 +68,7 @@ def interpolateMissingValues(dataFrame):
     dataFrame['windspeed'] = dataFrame['windspeed'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
     dataFrame['humidity'] = dataFrame['humidity'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
     dataFrame['cloudcover'] = dataFrame['cloudcover'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
+    dataFrame['solarradiation'] = dataFrame['solarradiation'].fillna(0)
 
     return dataFrame
 
@@ -134,8 +137,31 @@ def normalizeMissingValue(dataFrame):
 
 def createLoadColumnForPrevDay(dataFrame):
     dataFrame = dataFrame.reset_index(drop=True)
-    dataFrame.insert(15, column='load_day_before', value=dataFrame['load'].shift(24))
+    dataFrame.insert(16, column='load_day_before', value=dataFrame['load'].shift(24))
     dataFrame.loc[:23, 'load_day_before'] = dataFrame.loc[:23, 'load']
+
+    return dataFrame
+
+
+def createRegularHourColumn(dataFrame):
+    dataFrame['date'] = pd.to_datetime(dataFrame['date'])
+    dataFrame['hour'] = dataFrame['date'].dt.hour
+    dataFrame.insert(11, 'hour', dataFrame.pop('hour'))   
+
+    return dataFrame
+
+
+def createHourColumn(dataFrame):
+    SECONDS_IN_DAY = 24*60*60
+
+    hours = dataFrame['date'].dt.hour
+    seconds = hours.apply(lambda x: x*60*60)
+
+    sin_date = np.sin(seconds*(2*np.pi/SECONDS_IN_DAY))
+    cos_time = np.cos(seconds*(2*np.pi/SECONDS_IN_DAY))
+
+    dataFrame.insert(11, 'sin_date', sin_date)
+    dataFrame.insert(12, 'cos_time', cos_time)
 
     return dataFrame
 

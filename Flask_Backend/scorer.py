@@ -4,13 +4,7 @@ import numpy as np
 
 
 class Scorer:
-    
-    def get_score(self, trainY, trainPredict, testY, testPredict):
-        trainScore = math.sqrt(mean_squared_error(trainY, trainPredict))
-        testScore = math.sqrt(mean_squared_error(testY, testPredict))
         
-        return trainScore, testScore
-    
     def get_mape(self, trainY, trainPredict, testY, testPredict):
         trainY, trainPredict = np.array(trainY), np.array(trainPredict)
         testY, testPredict = np.array(testY), np.array(testPredict)
