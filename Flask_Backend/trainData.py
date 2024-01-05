@@ -4,7 +4,7 @@ from preparer import Preparer
 from scorer import Scorer
 
 def trainModel(dataFrame, shareForTraining):
-    NUMBER_OF_COLUMNS = 13
+    NUMBER_OF_COLUMNS = 15
 
     preparer = Preparer(dataFrame, NUMBER_OF_COLUMNS, shareForTraining)
     trainX, trainY, testX, testY = preparer.prepare_for_training()
@@ -21,4 +21,8 @@ def trainModel(dataFrame, shareForTraining):
     trainScore, testScore = scorer.get_score(trainY, trainPredict, testY, testPredict)
     print('Train Score: %.2f RMSE' % (trainScore))
     print('Test Score: %.2f RMSE' % (testScore))
+
+    trainScore, testScore = scorer.get_mape(trainY, trainPredict, testY, testPredict)
+    print('Train Score: %.2f MAPE' % (trainScore))
+    print('Test Score: %.2f MAPE' % (testScore))
 

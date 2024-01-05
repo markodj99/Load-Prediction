@@ -147,8 +147,15 @@ def saveProccessedDataToDb(dataFrame, dataBaseName):
 
 
 def loadDataFromDb(dataBaseName):
+    testQuery = """
+                    SELECT *
+                    FROM Load
+                    WHERE date >= '2018-01-01 00:00:00' AND date <= '2018-06-30 23:59:59';
+                """
+    normalQuery = 'SELECT * FROM Load'
+
     connection = sqlite3.connect(dataBaseName)
-    dataFrame = pd.read_sql_query('SELECT * FROM Load', connection)
+    dataFrame = pd.read_sql_query(normalQuery, connection)
     connection.close()
 
     dataFrame = dataFrame.drop('index', axis=1)

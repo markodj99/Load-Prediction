@@ -3,14 +3,14 @@ from keras.models import Sequential
 from tensorflow import keras
 from annBase import AnnBase
 
-MODEL_NAME = 'current_model'
+MODEL_NAME = 'test'
 
 class AnnRegression(AnnBase):
 
     def get_model(self):
         model = Sequential()
         if self.number_of_hidden_layers > 0:
-           model.add(Dense(self._number_of_neurons_in_first_hidden_layer, input_shape=(1, 12), kernel_initializer=self.kernel_initializer, activation=self.activation_function))
+           model.add(Dense(self._number_of_neurons_in_first_hidden_layer, input_shape=(1, 14), kernel_initializer=self.kernel_initializer, activation=self.activation_function))
            if self.number_of_hidden_layers > 1:
                for i in range(self.number_of_hidden_layers - 1):
                    model.add(Dense(self.number_of_neurons_in_other_hidden_layers, kernel_initializer=self.kernel_initializer, activation=self.activation_function))
@@ -26,7 +26,7 @@ class AnnRegression(AnnBase):
         self.model.compile(loss=self.cost_function, optimizer=self.optimizer)
         self.trainX = trainX
         self.model.fit(trainX, trainY, epochs=self.epoch_number, batch_size=self.batch_size_number, verbose=self.verbose)
-        #self.model.save(MODEL_NAME)
+        self.model.save(MODEL_NAME)
 
     def use_current_model(self, path, trainX):
         self.trainX = trainX
