@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import re
-from proccessData import invokeProccessing, loadData
+from proccessData import invokeProccessing, loadDataFromDb
 from trainData import trainModel
 
 app = Flask(__name__)
@@ -36,15 +36,13 @@ def uploadTrainingFiles():
 
 @app.route('/prepareTrainingData', methods=['POST'])
 def prepareTrainingData():
-    trainingData = invokeProccessing(LOAD_DATA_PATH, WEATHER_DATA_PATH, HOLIDAYS_DATA_PATH, DATABASE_NAME)
-    print(trainingData)
-
+    invokeProccessing(LOAD_DATA_PATH, WEATHER_DATA_PATH, HOLIDAYS_DATA_PATH, DATABASE_NAME)
     return jsonify({"allGood": "all good"})
 
 
 @app.route('/trainData', methods=['POST'])
 def trainData():
-    trainModel(loadData(DATABASE_NAME), 0.85)
+    trainModel(loadDataFromDb(DATABASE_NAME), 0.85)
     return jsonify({"allGood": "all good"})
 
 
