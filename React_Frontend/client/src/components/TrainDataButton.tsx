@@ -1,18 +1,18 @@
 //import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
 
 function TrainDataButton() {
 
     const handleTrainData = async () => {
       const uploadEndpoint = 'http://localhost:5000/trainData';
       const formData = new FormData();
-      console.log('usao');
   
       try {
           const response = await fetch(uploadEndpoint, {
             method: 'POST',
             body: formData,
           });
-          console.log('cekam');
+
           if (response.ok) {
             const data = await response.json();
             console.log(data);
@@ -25,11 +25,7 @@ function TrainDataButton() {
     };
   
     return (
-      <section className="container">
-        <div >
-          <button onClick={handleTrainData}>Train Data</button>
-        </div>
-      </section>
+      <button type="button" className="btn btn-outline-primary" onClick={handleTrainData}>Train Data</button>
     );
   }
   

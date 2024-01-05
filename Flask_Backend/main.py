@@ -42,7 +42,7 @@ def prepareTrainingData():
 
 @app.route('/trainData', methods=['POST'])
 def trainData():
-    trainModel(loadDataFromDb(DATABASE_NAME), 0.85)
+    trainModel(loadDataFromDb(DATABASE_NAME), 0.8)
     return jsonify({"allGood": "all good"})
 
 

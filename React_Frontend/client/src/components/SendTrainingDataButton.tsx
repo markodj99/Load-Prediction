@@ -1,5 +1,6 @@
 //import React from 'react';
 import {useDropzone} from 'react-dropzone';
+import 'bootstrap/dist/css/bootstrap.css';
 
 declare module 'react' {
   interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
@@ -49,16 +50,15 @@ function SendTrainingDataButton() {
   };
 
   return (
-    <section className="container">
-      <div {...getRootProps({className: 'dropzone'})}>
+    <div className="btn-group">
+      <div {...getRootProps({className: 'btn btn-outline-primary dropzone', type:'button'})}>
         <input {...getInputProps()} directory="" webkitdirectory="" type="file"/>
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <div className="d-flex justify-content-center align-items-center text-center">
+          <p className="w-100 mb-0">Click To Select Files</p>
+        </div>
       </div>
-      <button onClick={handleSendTrainingFiles}>Send Training Data</button>
-      <aside>
-        <h4>{acceptedFiles.length} files will uploaded</h4>
-      </aside>
-    </section>
+      <button type="button" className="btn btn-outline-primary" onClick={handleSendTrainingFiles}>Send Training Data</button>
+    </div>
   );
 }
 
@@ -106,3 +106,7 @@ function splitFormData(formData: FormData): FormData[] {
 }
 
 export default SendTrainingDataButton;
+
+/*<aside>
+<h4>{acceptedFiles.length} files will uploaded</h4>
+</aside>*/
