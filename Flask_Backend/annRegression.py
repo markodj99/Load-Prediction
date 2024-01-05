@@ -3,7 +3,7 @@ from keras.models import Sequential
 from tensorflow import keras
 from annBase import AnnBase
 
-MODEL_NAME = 'test'
+MODEL_NAME = 'e100bs1'
 
 class AnnRegression(AnnBase):
 
