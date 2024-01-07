@@ -24,7 +24,7 @@ WEATHER_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'weatherData')
 HOLIDAYS_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'holidays')
 
 SHARE_FOR_TRAINING = 0.8
-MODEL_NAME = "e150bs1w2020sft080"
+MODEL_NAME = "test"
 
 
 @app.route('/uploadTrainingFiles', methods=['POST'])
