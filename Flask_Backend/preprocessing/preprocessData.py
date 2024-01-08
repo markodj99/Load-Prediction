@@ -12,6 +12,8 @@ def invokePreproccessing(trainingData):
     trainingData = normalizeMissingValue(trainingData)
     trainingData = createLoadColumnForPrevDay(trainingData)
     trainingData = createHourColumn(trainingData)
+    trainingData = createAvgTemperatureColumn(trainingData)
+    trainingData = createAvgLoadDayBeforeColumn(trainingData)
 
     return trainingData
 
@@ -120,16 +122,36 @@ def createRegularHourColumn(dataFrame):
 
 
 def createHourColumn(dataFrame):
-    SECONDS_IN_DAY = 24*60*60
+    secsInDay = 24*60*60
 
     hours = dataFrame['date'].dt.hour
     seconds = hours.apply(lambda x: x*60*60)
 
-    sin_date = np.sin(seconds*(2*np.pi/SECONDS_IN_DAY))
-    cos_time = np.cos(seconds*(2*np.pi/SECONDS_IN_DAY))
+    sin_date = np.sin(seconds*(2*np.pi/secsInDay))
+    cos_time = np.cos(seconds*(2*np.pi/secsInDay))
 
     dataFrame.insert(11, 'sin_date', sin_date)
     dataFrame.insert(12, 'cos_time', cos_time)
+
+    return dataFrame
+
+
+def createAvgTemperatureColumn(dataFrame):
+    dataFrame.reset_index(drop=True, inplace=True)
+    dataFrame['date'] = pd.to_datetime(dataFrame['date'])
+    dataFrame['avg_temp'] = dataFrame.groupby(dataFrame['date'].dt.date)['temp'].transform('mean')
+    dataFrame.insert(14, 'avg_temp', dataFrame.pop('avg_temp'))
+
+    return dataFrame
+
+
+def createAvgLoadDayBeforeColumn(dataFrame):
+    dataFrame.reset_index(drop=True, inplace=True)
+    dailyAvgLoad = dataFrame.groupby(dataFrame['date'].dt.date)['load'].mean()
+    dataFrame['avg_load_day_before'] = dataFrame['date'].dt.date.map(dailyAvgLoad.shift())
+
+    dataFrame.loc[:23, 'avg_load_day_before'] = dataFrame.loc[:23, 'load'].mean()
+    dataFrame.insert(20, 'avg_load_day_before', dataFrame.pop('avg_load_day_before'))
 
     return dataFrame
 

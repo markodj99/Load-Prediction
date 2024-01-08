@@ -20,8 +20,6 @@ class Preparer:
         train_size = int(len(dataset) * self.share_for_training)
         train, test = dataset[0:train_size, :], dataset[train_size:len(dataset), :]
 
-        print(len(train), len(test))
-
         trainX, trainY = self.create_dataset(train, self.number_of_columns)
         testX, testY = self.create_dataset(test, self.number_of_columns)
 

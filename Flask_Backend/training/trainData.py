@@ -5,9 +5,9 @@ from training.scorer import Scorer
 
 
 def trainModel(dataFrame, shareForTraining, modelName):
-    NUMBER_OF_COLUMNS = 18
+    numberOfColumns = 20
 
-    preparer = Preparer(dataFrame, NUMBER_OF_COLUMNS, shareForTraining)
+    preparer = Preparer(dataFrame, numberOfColumns, shareForTraining)
     trainX, trainY, testX, testY = preparer.prepare_for_training()
 
     ann_regression = AnnRegression()
