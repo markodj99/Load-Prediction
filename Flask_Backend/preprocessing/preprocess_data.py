@@ -131,8 +131,8 @@ def create_hour_column(data_frame):
     sin_date = np.sin(seconds*(2*np.pi/seconds_in_day))
     cos_time = np.cos(seconds*(2*np.pi/seconds_in_day))
 
-    data_frame.insert(11, 'sin_date', sin_date)
-    data_frame.insert(12, 'cos_time', cos_time)
+    data_frame.insert(11, 'sin_hour', sin_date)
+    data_frame.insert(12, 'cos_hour', cos_time)
 
     return data_frame
 

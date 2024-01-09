@@ -3,6 +3,7 @@ import PrepareTrainingDataButton from "./components/PrepareTrainingDataButton";
 import ImportTrainingDataButton from "./components/ImportTrainingDataButton";
 import TrainModelButton from "./components/TrainModelButton";
 import 'bootstrap/dist/css/bootstrap.css';
+import { Toaster } from "react-hot-toast";
 
 function App()
 {
@@ -11,6 +12,7 @@ function App()
         <ImportTrainingDataButton/>
         <PrepareTrainingDataButton/>
         <TrainModelButton/>
+        <Toaster/>
       </div>
   );
 }

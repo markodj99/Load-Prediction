@@ -1,6 +1,7 @@
 //import React from 'react';
 import {useDropzone} from 'react-dropzone';
 import 'bootstrap/dist/css/bootstrap.css';
+import toast from 'react-hot-toast';
 
 declare module 'react' {
   interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
@@ -23,12 +24,15 @@ function ImportTrainingDataButton() {
   const handleSendTrainingFiles = async () => {
     const uploadEndpoint = 'http://localhost:5000/upload_training_files';
 
+    toast.loading("Importing files.");
+    
+
     const formData = new FormData();
     acceptedFiles.forEach(file => {
       formData.append('file', file);
     });
     const formDataChunks = splitFormData(formData);
-
+    let numberOfImportedFiles = 0;
     for(let i = 0; i < 10; i++)
     {
       try {
@@ -39,14 +43,24 @@ function ImportTrainingDataButton() {
   
         if (response.ok) {
           const data = await response.json();
+          numberOfImportedFiles += data.num_received_files;
           console.log(data);
         } else {
           console.error('Error uploading files:', response.statusText);
+          toast.dismiss();
+          toast.error('Error uploading files.');
         }
       } catch (error) {
         console.error('Error uploading files:', error);
+        toast.dismiss();
+        toast.error('Error uploading files.');
       }
     }
+
+    toast.dismiss();
+    toast.success(`Successfully imported ${numberOfImportedFiles} files.`, {
+      duration: 3000
+    });
   };
 
   return (
@@ -57,7 +71,7 @@ function ImportTrainingDataButton() {
           <p className="w-100 mb-0">Click To Select Files</p>
         </div>
       </div>
-      <button type="button" className="btn btn-outline-primary" onClick={handleSendTrainingFiles}>Send Training Data</button>
+      <button type="button" className="btn btn-outline-primary" onClick={handleSendTrainingFiles}>Import Training Data</button>
     </div>
   );
 }

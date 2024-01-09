@@ -1,5 +1,6 @@
 //import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import toast from 'react-hot-toast';
 
 function PrepareTrainingDataButton() {
 
@@ -7,6 +8,7 @@ function PrepareTrainingDataButton() {
     const uploadEndpoint = 'http://localhost:5000/prepare_training_data';
     const formData = new FormData();
 
+    toast.loading('Preparing training data. Please be patient.');
     try {
         const response = await fetch(uploadEndpoint, {
           method: 'POST',
@@ -15,12 +17,21 @@ function PrepareTrainingDataButton() {
 
         if (response.ok) {
           const data = await response.json();
+          toast.dismiss();
+          toast.success(`Successfully processed and saved ${data.num_processed_writen_instance} objects.` , {
+            duration: 3000
+          });
+
           console.log(data);
         } else {
-          console.error('Error preparing training data:', response.statusText);
+          console.error('Error while preparing training data:', response.statusText);
+          toast.dismiss();
+          toast.error('Error while preparing training data.');
         }
         } catch (error) {
-         console.error('rror preparing training data:', error);
+         console.error('Error while preparing training data:', error);
+         toast.dismiss();
+         toast.error('Error while preparing training data.');
         }
   };
 

@@ -25,7 +25,7 @@ function TrainDataButton() {
     };
   
     return (
-      <button type="button" className="btn btn-outline-primary" onClick={handleTrainData}>Train Data</button>
+      <button type="button" className="btn btn-outline-primary" onClick={handleTrainData}>Train Model</button>
     );
   }
   
