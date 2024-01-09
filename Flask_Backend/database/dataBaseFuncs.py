@@ -29,6 +29,7 @@ def loadDataFromDb(dataBaseName, ignore2020=False):
     dataFrame = dataFrame.drop('index', axis=1)
     dataFrame = dataFrame.drop('name', axis=1)
     dataFrame = dataFrame.drop('date', axis=1)
+    dataFrame = dataFrame.drop('solarradiation', axis=1)
 
     return dataFrame
 

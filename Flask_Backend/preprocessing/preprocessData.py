@@ -13,6 +13,7 @@ def invokePreproccessing(trainingData):
     trainingData = createLoadColumnForPrevDay(trainingData)
     trainingData = createHourColumn(trainingData)
     trainingData = createAvgTemperatureColumn(trainingData)
+    trainingData = createAvgTemperatureDayBeforeColumn(trainingData)
     trainingData = createAvgLoadDayBeforeColumn(trainingData)
 
     return trainingData
@@ -145,13 +146,24 @@ def createAvgTemperatureColumn(dataFrame):
     return dataFrame
 
 
+def createAvgTemperatureDayBeforeColumn(dataFrame):
+    dataFrame.reset_index(drop=True, inplace=True)
+    dailyAvgTemp = dataFrame.groupby(dataFrame['date'].dt.date)['temp'].mean()
+    dataFrame['avg_temp_day_before'] = dataFrame['date'].dt.date.map(dailyAvgTemp.shift())
+
+    dataFrame.loc[:23, 'avg_temp_day_before'] = dataFrame.loc[:23, 'temp'].mean()
+    dataFrame.insert(15, 'avg_temp_day_before', dataFrame.pop('avg_temp_day_before'))
+
+    return dataFrame
+
+
 def createAvgLoadDayBeforeColumn(dataFrame):
     dataFrame.reset_index(drop=True, inplace=True)
     dailyAvgLoad = dataFrame.groupby(dataFrame['date'].dt.date)['load'].mean()
     dataFrame['avg_load_day_before'] = dataFrame['date'].dt.date.map(dailyAvgLoad.shift())
 
     dataFrame.loc[:23, 'avg_load_day_before'] = dataFrame.loc[:23, 'load'].mean()
-    dataFrame.insert(20, 'avg_load_day_before', dataFrame.pop('avg_load_day_before'))
+    dataFrame.insert(21, 'avg_load_day_before', dataFrame.pop('avg_load_day_before'))
 
     return dataFrame
 
