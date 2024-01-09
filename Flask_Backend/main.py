@@ -2,11 +2,11 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 
-from utills import uploadTrainingFilesUtil
-from preprocessing.dataLoader import invokeDataLoading
-from preprocessing.preprocessData import invokePreproccessing
-from database.dataBaseFuncs import *
-from training.trainData import trainModel
+from utills import upload_training_files_util
+from preprocessing.data_loader import invoke_data_loading
+from preprocessing.preprocess_data import invoke_preproccessing
+from database.data_base_handler import *
+from training.train_model import train_new_model
 
 
 app = Flask(__name__)
@@ -24,33 +24,33 @@ WEATHER_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'weatherData')
 HOLIDAYS_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'holidays')
 
 SHARE_FOR_TRAINING = 0.8
-MODEL_NAME = "e120bs1WatWaldbWatdbWOsr"
+MODEL_NAME = "testtesttest"
 
 
-@app.route('/uploadTrainingFiles', methods=['POST'])
-def uploadTrainingFiles():
-    response = uploadTrainingFilesUtil(request.files.getlist('file'), LOAD_DATA_PATH, WEATHER_DATA_PATH, HOLIDAYS_DATA_PATH)
+@app.route('/upload_training_files', methods=['POST'])
+def upload_training_files():
+    response = upload_training_files_util(request.files.getlist('file'), LOAD_DATA_PATH, WEATHER_DATA_PATH, HOLIDAYS_DATA_PATH)
     return jsonify(response)
 
 
-@app.route('/prepareTrainingData', methods=['POST'])
-def prepareTrainingData():
-    dataFrame = invokeDataLoading(LOAD_DATA_PATH, WEATHER_DATA_PATH, HOLIDAYS_DATA_PATH)
-    dataFrame = invokePreproccessing(dataFrame)
-    response = saveProcessedDataToDb(dataFrame, DATABASE_LOAD_NAME)
+@app.route('/prepare_training_data', methods=['POST'])
+def prepare_training_data():
+    data_frame = invoke_data_loading(LOAD_DATA_PATH, WEATHER_DATA_PATH, HOLIDAYS_DATA_PATH)
+    data_frame = invoke_preproccessing(data_frame)
+    response = save_processed_data_to_db(data_frame, DATABASE_LOAD_NAME)
 
     return jsonify({"num_processed_writen_instance": response})
 
 
-@app.route('/trainData', methods=['POST'])
-def trainData():
-    dataFrame = loadDataFromDb(DATABASE_LOAD_NAME)
+@app.route('/train_model', methods=['POST'])
+def train_model():
+    data_frame = load_training_data_from_db(DATABASE_LOAD_NAME)
 
-    trainScoreMape, testScoreMape, trainScoreRmse, testScoreRmse = trainModel(dataFrame, SHARE_FOR_TRAINING, MODEL_NAME)
-    response = jsonify({"trainScoreMape": trainScoreMape, "testScoreMape": testScoreMape, 
-                        "trainScoreRmse": trainScoreRmse, "testScoreRmse": testScoreRmse})
+    train_score_mape, test_score_mape, train_score_rmse, test_score_rmse = train_new_model(data_frame, SHARE_FOR_TRAINING, MODEL_NAME)
+    response = jsonify({"train_score_mape": train_score_mape, "test_score_mape": test_score_mape, 
+                        "train_score_rmse": train_score_rmse, "test_score_rmse": test_score_rmse})
 
-    saveModelScoreData(MODEL_NAME, trainScoreMape, testScoreMape, trainScoreRmse, testScoreRmse, DATABASE_MODEL_SCORE_NAME)
+    save_model_score_data(MODEL_NAME, train_score_mape, test_score_mape, train_score_rmse, test_score_rmse, DATABASE_MODEL_SCORE_NAME)
 
     return response
 

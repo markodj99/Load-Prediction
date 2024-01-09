@@ -1,16 +1,16 @@
 //import React, {useState, useEffect} from "react";
 import PrepareTrainingDataButton from "./components/PrepareTrainingDataButton";
-import SendTrainingDataButton from "./components/SendTrainingDataButton";
-import TrainDataButton from "./components/TrainDataButton";
+import ImportTrainingDataButton from "./components/ImportTrainingDataButton";
+import TrainModelButton from "./components/TrainModelButton";
 import 'bootstrap/dist/css/bootstrap.css';
 
 function App()
 {
   return(
       <div className="btn-group d-flex container" role="group" aria-label="Basic example">
-        <SendTrainingDataButton/>
+        <ImportTrainingDataButton/>
         <PrepareTrainingDataButton/>
-        <TrainDataButton/>
+        <TrainModelButton/>
       </div>
   );
 }

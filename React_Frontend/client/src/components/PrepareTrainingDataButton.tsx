@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 function PrepareTrainingDataButton() {
 
   const handlePrepareTrainingData = async () => {
-    const uploadEndpoint = 'http://localhost:5000/prepareTrainingData';
+    const uploadEndpoint = 'http://localhost:5000/prepare_training_data';
     const formData = new FormData();
 
     try {
