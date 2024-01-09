@@ -18,10 +18,10 @@ CORS(app, origins="http://localhost:3000")
 DATABASE_LOAD_NAME = 'database/loadDataBase.db'
 DATABASE_MODEL_SCORE_NAME = 'database/modelScore.db'
 
-UPLOAD_FOLDER = os.path.join(app.root_path, 'rawTrainingData')
-LOAD_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'loadData')
-WEATHER_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'weatherData')
-HOLIDAYS_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'holidays')
+UPLOAD_FOLDER = os.path.join(app.root_path, 'raw_training_data')
+LOAD_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'load_data')
+WEATHER_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'weather_data')
+HOLIDAYS_DATA_PATH = os.path.join(UPLOAD_FOLDER, 'holidays_data')
 
 SHARE_FOR_TRAINING = 0.8
 MODEL_NAME = "testtesttest"
