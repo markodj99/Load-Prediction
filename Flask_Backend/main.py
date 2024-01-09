@@ -57,6 +57,16 @@ def train_model():
     return response
 
 
+@app.route('/upload_and_prepare_training_files', methods=['POST'])
+def upload_and_prepare_training_files():
+    return '1'
+
+
+@app.route('/test_model', methods=['POST'])
+def test_model():
+    return '1'
+
+
 if __name__ == "__main__":
     app.run(debug = True)
 
