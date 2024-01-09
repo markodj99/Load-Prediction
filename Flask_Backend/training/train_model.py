@@ -7,6 +7,8 @@ from training.scorer import Scorer
 def train_new_model(data_frame, share_for_training, model_name):
     number_of_columns = 20
 
+    print(data_frame.shape[0])
+
     preparer = Preparer(data_frame, number_of_columns, share_for_training)
     trainX, trainY, testX, testY = preparer.prepare_for_training()
 

@@ -7,7 +7,6 @@ function PrepareTrainingDataButton() {
   const handlePrepareTrainingData = async () => {
     const uploadEndpoint = 'http://localhost:5000/prepare_training_data';
     const formData = new FormData();
-
     toast.loading('Preparing training data. Please be patient.');
     try {
         const response = await fetch(uploadEndpoint, {
@@ -21,17 +20,15 @@ function PrepareTrainingDataButton() {
           toast.success(`Successfully processed and saved ${data.num_processed_writen_instance} objects.` , {
             duration: 3000
           });
-
-          console.log(data);
         } else {
           console.error('Error while preparing training data:', response.statusText);
           toast.dismiss();
           toast.error('Error while preparing training data.');
         }
         } catch (error) {
-         console.error('Error while preparing training data:', error);
-         toast.dismiss();
-         toast.error('Error while preparing training data.');
+          console.error('Error while preparing training data:', error);
+          toast.dismiss();
+          toast.error('Error while preparing training data.');
         }
   };
 

@@ -23,15 +23,14 @@ function ImportTrainingDataButton() {
 
   const handleSendTrainingFiles = async () => {
     const uploadEndpoint = 'http://localhost:5000/upload_training_files';
-
     toast.loading("Importing files.");
-    
-
+  
     const formData = new FormData();
     acceptedFiles.forEach(file => {
       formData.append('file', file);
     });
     const formDataChunks = splitFormData(formData);
+
     let numberOfImportedFiles = 0;
     for(let i = 0; i < 10; i++)
     {
@@ -44,16 +43,15 @@ function ImportTrainingDataButton() {
         if (response.ok) {
           const data = await response.json();
           numberOfImportedFiles += data.num_received_files;
-          console.log(data);
         } else {
-          console.error('Error uploading files:', response.statusText);
+          console.error('Error while uploading files:', response.statusText);
           toast.dismiss();
-          toast.error('Error uploading files.');
+          toast.error('Error while uploading files.');
         }
       } catch (error) {
-        console.error('Error uploading files:', error);
+        console.error('Error while uploading files:', error);
         toast.dismiss();
-        toast.error('Error uploading files.');
+        toast.error('Error while uploading files.');
       }
     }
 

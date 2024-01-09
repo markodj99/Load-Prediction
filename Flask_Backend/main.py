@@ -44,7 +44,9 @@ def prepare_training_data():
 
 @app.route('/train_model', methods=['POST'])
 def train_model():
-    data_frame = load_training_data_from_db(DATABASE_LOAD_NAME)
+    start_date = request.form.get('startDate')[:10]
+    end_date = request.form.get('endDate')[:10]
+    data_frame = load_training_data_from_db(DATABASE_LOAD_NAME, start_date, end_date)
 
     train_score_mape, test_score_mape, train_score_rmse, test_score_rmse = train_new_model(data_frame, SHARE_FOR_TRAINING, MODEL_NAME)
     response = jsonify({"train_score_mape": train_score_mape, "test_score_mape": test_score_mape, 
