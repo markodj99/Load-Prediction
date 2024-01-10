@@ -24,7 +24,7 @@ function TrainDataButton() {
             toast.dismiss();
             toast.success(`Successfully trained new model.
                               MAPE Train: ${data.train_score_mape.toFixed(2)}%
-                              MAPE test: ${data.test_score_mape.toFixed(2)}%
+                              MAPE Test: ${data.test_score_mape.toFixed(2)}%
                               RMSE Train: ${data.train_score_rmse.toFixed(2)}
                               RMSE Test: ${data.test_score_rmse.toFixed(2)}` , {
                           duration: 8000
