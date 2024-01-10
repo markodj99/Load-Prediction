@@ -12,7 +12,7 @@ class DataProcessingService():
         train_data_frame = self.__drop_weather_features(train_data_frame)
         train_data_frame = self.__interpolate_missing_values(train_data_frame)
         train_data_frame = self.__fill_missing_temperature(train_data_frame)
-        train_data_frame = self.__create_season_column(train_data_frame)
+        train_data_frame = self.__create_month_column(train_data_frame)
         train_data_frame = self.__create_day_type_column(train_data_frame)
         train_data_frame = self.__normalize_missing_value(train_data_frame)
         train_data_frame = self.__create_load_column_for_prev_day(train_data_frame)
@@ -28,21 +28,21 @@ class DataProcessingService():
         test_data_frame = self.__drop_weather_features(test_data_frame)
         test_data_frame = self.__interpolate_missing_values(test_data_frame)
         test_data_frame = self.__fill_missing_temperature(test_data_frame)
-        test_data_frame = self.__create_season_column(test_data_frame)
+        test_data_frame = self.__create_month_column(test_data_frame)
         test_data_frame = self.__create_day_type_column(test_data_frame)
         test_data_frame = self.__normalize_missing_value(test_data_frame)
 
         load_day_before = pd.Series([-1] * len(test_data_frame), name='load_day_before')
-        test_data_frame.insert(16, 'load_day_before', load_day_before)
+        test_data_frame.insert(14, 'load_day_before', load_day_before)
         
         test_data_frame = self.__create_hour_column(test_data_frame)
         test_data_frame = self.__create_avg_temperature_column(test_data_frame)
         
         avg_temp_day_before = pd.Series([-1] * len(test_data_frame), name='avg_temp_day_before')
-        test_data_frame.insert(15, 'avg_temp_day_before', avg_temp_day_before)
+        test_data_frame.insert(13, 'avg_temp_day_before', avg_temp_day_before)
 
         avg_load_day_before = pd.Series([-1] * len(test_data_frame), name='avg_load_day_before')
-        test_data_frame.insert(21, 'avg_load_day_before', avg_load_day_before)
+        test_data_frame.insert(19, 'avg_load_day_before', avg_load_day_before)
 
         load = pd.Series([-1] * len(test_data_frame), name='load')
         test_data_frame['load'] = load
@@ -84,36 +84,25 @@ class DataProcessingService():
 
         return data_frame
     
-    def __create_season_column(self, data_frame):
-        month = data_frame['date'].dt.month
-        seasons = pd.DataFrame()
-        seasons['seasons'] = month.apply(self.__get_seasons)
+    def __create_month_column(self, train_data_frame):
+        month = train_data_frame['date'].dt.month
 
-        seasons_encoded = pd.get_dummies(seasons.seasons, prefix='season')
+        sin_month = np.sin(month*(2.*np.pi/12))
+        cos_month = np.cos(month*(2.*np.pi/12))
 
-        for name in seasons_encoded.columns:
-            data_frame.insert(1, name, seasons_encoded[name])
+        train_data_frame.insert(1, 'sin_month', sin_month)
+        train_data_frame.insert(1, 'cos_month', cos_month)
 
-        return data_frame
-
-    def __get_seasons(self, month):
-        if month == 12 or month == 1 or month == 2:
-            return 'winter'
-        elif month == 3 or month == 4 or month == 5:
-            return 'spring'
-        elif month == 6 or month == 7 or month == 8:
-            return 'summer'
-        else:
-            return 'autumn'
+        return train_data_frame
 
     def __create_day_type_column(self, data_frame):
         data_frame['date'] = pd.to_datetime(data_frame['date'])
         
-        data_frame.insert(5, 'monday', (data_frame['date'].dt.day_name() == 'Monday').astype(int))
-        data_frame.insert(6, 'friday', (data_frame['date'].dt.day_name() == 'Friday').astype(int))
-        data_frame.insert(7, 'saturday', (data_frame['date'].dt.day_name() == 'Saturday').astype(int))
-        data_frame.insert(8, 'sunday', (data_frame['date'].dt.day_name() == 'Sunday').astype(int))
-        data_frame.insert(9, 'othey_days', ((data_frame['date'].dt.day_name() != 'Monday') & 
+        data_frame.insert(3, 'monday', (data_frame['date'].dt.day_name() == 'Monday').astype(int))
+        data_frame.insert(4, 'friday', (data_frame['date'].dt.day_name() == 'Friday').astype(int))
+        data_frame.insert(5, 'saturday', (data_frame['date'].dt.day_name() == 'Saturday').astype(int))
+        data_frame.insert(6, 'sunday', (data_frame['date'].dt.day_name() == 'Sunday').astype(int))
+        data_frame.insert(7, 'othey_days', ((data_frame['date'].dt.day_name() != 'Monday') & 
                                         (data_frame['date'].dt.day_name() != 'Friday') & 
                                         (data_frame['date'].dt.day_name() != 'Saturday') & 
                                         (data_frame['date'].dt.day_name() != 'Sunday')).astype(int))
@@ -130,7 +119,7 @@ class DataProcessingService():
 
     def __create_load_column_for_prev_day(self, data_frame):
         data_frame = data_frame.reset_index(drop=True)
-        data_frame.insert(16, column='load_day_before', value=data_frame['load'].shift(24))
+        data_frame.insert(14, column='load_day_before', value=data_frame['load'].shift(24))
         data_frame.loc[:23, 'load_day_before'] = data_frame.loc[:23, 'load']
 
         return data_frame
@@ -144,8 +133,8 @@ class DataProcessingService():
         sin_date = np.sin(seconds*(2*np.pi/seconds_in_day))
         cos_time = np.cos(seconds*(2*np.pi/seconds_in_day))
 
-        data_frame.insert(11, 'sin_hour', sin_date)
-        data_frame.insert(12, 'cos_hour', cos_time)
+        data_frame.insert(9, 'sin_hour', sin_date)
+        data_frame.insert(10, 'cos_hour', cos_time)
 
         return data_frame
 
@@ -153,7 +142,7 @@ class DataProcessingService():
         data_frame.reset_index(drop=True, inplace=True)
         data_frame['date'] = pd.to_datetime(data_frame['date'])
         data_frame['avg_temp'] = data_frame.groupby(data_frame['date'].dt.date)['temp'].transform('mean')
-        data_frame.insert(14, 'avg_temp', data_frame.pop('avg_temp'))
+        data_frame.insert(12, 'avg_temp', data_frame.pop('avg_temp'))
 
         return data_frame
 
@@ -163,7 +152,7 @@ class DataProcessingService():
         data_frame['avg_temp_day_before'] = data_frame['date'].dt.date.map(daily_avg_temp.shift())
 
         data_frame.loc[:23, 'avg_temp_day_before'] = data_frame.loc[:23, 'temp'].mean()
-        data_frame.insert(15, 'avg_temp_day_before', data_frame.pop('avg_temp_day_before'))
+        data_frame.insert(13, 'avg_temp_day_before', data_frame.pop('avg_temp_day_before'))
 
         return data_frame
 
@@ -173,7 +162,7 @@ class DataProcessingService():
         data_frame['avg_load_day_before'] = data_frame['date'].dt.date.map(daily_avg_load.shift())
 
         data_frame.loc[:23, 'avg_load_day_before'] = data_frame.loc[:23, 'load'].mean()
-        data_frame.insert(21, 'avg_load_day_before', data_frame.pop('avg_load_day_before'))
+        data_frame.insert(19, 'avg_load_day_before', data_frame.pop('avg_load_day_before'))
 
         return data_frame
 

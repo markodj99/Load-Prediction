@@ -2,7 +2,7 @@ from re import VERBOSE
 
 
 EPOCH_NUMBER = 150
-BATCH_SIZE_NUMBER = 128
+BATCH_SIZE_NUMBER = 1
 COST_FUNCTION = 'mean_squared_error'
 OPTIMIZER = 'adam'
 KERNEL_INITIALIZER = 'normal'
@@ -75,7 +75,6 @@ class AnnBase:
     def optimizer(self, value):
         self._optimizer = value
     
-    
     #Initializers define the way to set the initial random weights of Keras layers.
     #random_normal
     #normal
@@ -95,11 +94,9 @@ class AnnBase:
     def kernel_initializer(self, value):
         self._kernel_initializer = value
 
-
     @property
     def activation_function(self):
         return self._activation_function
-
 
     #relu 
     #sigmoid

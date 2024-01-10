@@ -71,3 +71,4 @@ class Preparer:
             dataY.append(dataset[i, look_back - 1])
 
         return numpy.array(dataX), numpy.array(dataY)
+

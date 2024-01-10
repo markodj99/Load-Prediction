@@ -1,4 +1,3 @@
-//import React from 'react';
 import {useDropzone} from 'react-dropzone';
 import 'bootstrap/dist/css/bootstrap.css';
 import toast from 'react-hot-toast';
@@ -16,7 +15,7 @@ function ImportAndPrepareTestDataButton() {
   });
 
   const handleSendTrainingFiles = async () => {
-    const uploadEndpoint = 'http://localhost:5000/upload_and_prepare_training_files';
+    const uploadEndpoint = 'http://localhost:5000/upload_and_prepare_test_files';
     toast.loading("Importing and preparing files.");
   
     const formData = new FormData();
@@ -33,7 +32,7 @@ function ImportAndPrepareTestDataButton() {
     if (response.ok) {
         const data = await response.json();
         toast.dismiss();
-        toast.success(`Successfully imported ${data.num_processed_and_writen_instance} files.`, {
+        toast.success(`Successfully imported and processed ${data.num_processed_and_writen_instance} objects.`, {
           duration: 3000
         });
     } else {

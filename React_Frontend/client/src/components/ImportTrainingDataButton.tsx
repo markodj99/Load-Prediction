@@ -1,4 +1,3 @@
-//import React from 'react';
 import {useDropzone} from 'react-dropzone';
 import 'bootstrap/dist/css/bootstrap.css';
 import toast from 'react-hot-toast';

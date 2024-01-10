@@ -1,4 +1,3 @@
-//import React, {useState, useEffect} from "react";
 import PrepareTrainingDataButton from "./components/PrepareTrainingDataButton";
 import ImportTrainingDataButton from "./components/ImportTrainingDataButton";
 import TrainModelButton from "./components/TrainModelButton";

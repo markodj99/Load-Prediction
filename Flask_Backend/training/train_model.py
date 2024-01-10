@@ -5,12 +5,13 @@ from training.scorer import Scorer
 
 class TrainModelService():
 
-    def __init__(self, model_name, share_for_training):
+    def __init__(self, model_name, share_for_training, epoch_number):
         self.__model_name = model_name
         self.__share_for_training = share_for_training
+        self.__epoch_number = epoch_number
 
     def train_new_model(self, data_frame):
-        number_of_columns = 20
+        number_of_columns = data_frame.shape[1]
         print(data_frame.shape[0])
 
         preparer = Preparer(data_frame, number_of_columns, self.__share_for_training)
@@ -18,6 +19,8 @@ class TrainModelService():
 
         ann_regression = AnnRegression()
         ann_regression.set_model_name(self.__model_name)
+        ann_regression.set_number_of_train_columns(number_of_columns - 1)
+        ann_regression.epoch_number = self.__epoch_number
 
         time_begin = time.time()
         trainPredict, testPredict = ann_regression.compile_fit_predict(trainX, trainY, testX)
@@ -38,4 +41,4 @@ class TrainModelService():
         print('Test Score: %.2f RMSE' % (testScoreRmse))
 
         return trainScoreMape, testScoreMape, trainScoreRmse, testScoreRmse
-        
+

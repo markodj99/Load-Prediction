@@ -5,6 +5,9 @@ import numpy as np
 
 class Scorer:
         
+    def __init__(self):
+        pass
+
     def get_rmse(self, trainY, trainPredict, testY, testPredict):
         trainScore = math.sqrt(mean_squared_error(trainY, trainPredict))
         testScore = math.sqrt(mean_squared_error(testY, testPredict))
