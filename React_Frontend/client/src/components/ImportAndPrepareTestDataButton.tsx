@@ -33,7 +33,7 @@ function ImportAndPrepareTestDataButton() {
     if (response.ok) {
         const data = await response.json();
         toast.dismiss();
-        toast.success(`Successfully imported ${1234} files.`, {
+        toast.success(`Successfully imported ${data.num_processed_and_writen_instance} files.`, {
           duration: 3000
         });
     } else {
