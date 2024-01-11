@@ -14,12 +14,6 @@ function ImportTrainingDataButton() {
     getFilesFromEvent: event => getFiles(event)
   });
 
-  /*const files = acceptedFiles.map(f => (
-    <li key={f.name}>
-      {f.name}
-    </li>
-  ));*/
-
   const handleSendTrainingFiles = async () => {
     const uploadEndpoint = 'http://localhost:5000/upload_training_files';
     toast.loading("Importing files.");
@@ -43,29 +37,27 @@ function ImportTrainingDataButton() {
           const data = await response.json();
           numberOfImportedFiles += data.num_received_files;
         } else {
-          console.error('Error while uploading files:', response.statusText);
+          console.error('Error while uploading the files:', response.statusText);
           toast.dismiss();
-          toast.error('Error while uploading files.');
+          toast.error('Error while uploading the files.', {duration: 8000});
         }
       } catch (error) {
-        console.error('Error while uploading files:', error);
+        console.error('Error while uploading the files:', error);
         toast.dismiss();
-        toast.error('Error while uploading files.');
+        toast.error('Error while uploading thefiles.', {duration: 8000});
       }
     }
 
     toast.dismiss();
-    toast.success(`Successfully imported ${numberOfImportedFiles} files.`, {
-      duration: 3000
-    });
+    toast.success(`Successfully imported ${numberOfImportedFiles} files.`, {duration: 8000});
   };
 
   return (
     <div className="btn-group">
-      <div {...getRootProps({className: 'btn btn-outline-primary dropzone', type:'button'})}>
+      <div {...getRootProps({className: 'btn btn-outline-primary dropzone d-flex justify-content-center', type:'button'})}>
         <input {...getInputProps()} directory="" webkitdirectory="" type="file"/>
-        <div className="d-flex justify-content-center align-items-center text-center">
-          <p className="w-100 mb-0">Click To Select Files</p>
+        <div className="d-flex justify-content-center align-items-center">
+          <p className="w-100 mb-0 text-center">Select Files</p>
         </div>
       </div>
       <button type="button" className="btn btn-outline-primary" onClick={handleSendTrainingFiles}>Import Training Data</button>
@@ -117,7 +109,3 @@ function splitFormData(formData: FormData): FormData[] {
 }
 
 export default ImportTrainingDataButton;
-
-/*<aside>
-<h4>{acceptedFiles.length} files will uploaded</h4>
-</aside>*/

@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 interface Props{
     predictData: PredictData,
-    firtDay: number,
+    firstDay: number,
     numberOfDays: number
 }
 
@@ -26,19 +26,17 @@ interface UnpackedData {
     load: number[];
 }
   
-function PredictTable({predictData, firtDay, numberOfDays}: Props)
+function PredictTable({predictData, firstDay, numberOfDays}: Props)
 {
     let arrayOfPredictData = [predictData.day1, predictData.day2, predictData.day3, predictData.day4, 
                               predictData.day5, predictData.day6, predictData.day7];
     
-    //arrayOfPredictData = arrayOfPredictData.slice(firtDay, arrayOfPredictData.length);
+    arrayOfPredictData = arrayOfPredictData.slice(firstDay - 1, arrayOfPredictData.length);
 
-    //if (numberOfDays > arrayOfPredictData.length) numberOfDays = arrayOfPredictData.length;
-    //else arrayOfPredictData = arrayOfPredictData.slice(0, numberOfDays);
-    //const maxNumberOfDays = arrayOfPredictData.length - firtDay;
-    //if (numberOfDays > maxNumberOfDays) numberOfDays = maxNumberOfDays;
+    if (numberOfDays > arrayOfPredictData.length) numberOfDays = arrayOfPredictData.length;
+    else arrayOfPredictData = arrayOfPredictData.slice(0, numberOfDays);
+
     let unpackedData:UnpackedData = {date: [], load: []};
-    
     if (arrayOfPredictData[0].date.length !== 0)
     {
         for(let i = 0; i < arrayOfPredictData.length; i++)
@@ -60,18 +58,20 @@ function PredictTable({predictData, firtDay, numberOfDays}: Props)
     ));
 
     return(
-        <table className="table table-striped-columns">
-            <thead>
-                <tr className="table-dark">
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Load</th>
-                </tr>
-            </thead>
-            <tbody>
-                {displayData}
-            </tbody>
-        </table>
+        <div className="table-container">
+            <table className="table table-hover table-bordered table-responsive-md">
+                <thead>
+                    <tr className="table-dark">
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Load</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {displayData}
+                </tbody>
+            </table>
+        </div>
     );
 }
 

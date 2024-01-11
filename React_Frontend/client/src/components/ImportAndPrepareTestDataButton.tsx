@@ -32,30 +32,28 @@ function ImportAndPrepareTestDataButton() {
     if (response.ok) {
         const data = await response.json();
         toast.dismiss();
-        toast.success(`Successfully imported and processed ${data.num_processed_and_writen_instance} objects.`, {
-          duration: 3000
-        });
+        toast.success(`Successfully imported and processed ${data.num_processed_and_writen_instance} instances.`, {duration: 8000});
     } else {
-        console.error('Error while uploading and preparing files:', response.statusText);
+        console.error('Error while uploading and preparing the files:', response.statusText);
         toast.dismiss();
-        toast.error('Error while uploading and preparing files.');
+        toast.error('Error while uploading and preparing the files.', {duration: 8000});
     }
     } catch (error) {
-    console.error('Error while uploading and preparing files:', error);
+    console.error('Error while uploading and preparing the files:', error);
     toast.dismiss();
-    toast.error('Error while uploading and preparing files.');
+    toast.error('Error while uploading and preparing the files.', {duration: 8000});
     }
   };
 
   return (
-    <div className="btn-group mx-5">
-      <div {...getRootProps({className: 'btn btn-outline-primary dropzone', type:'button'})}>
+    <div className="btn-group">
+      <div {...getRootProps({className: 'btn btn-outline-success dropzone d-flex justify-content-center', type:'button'})}>
         <input {...getInputProps()} directory="" webkitdirectory="" type="file"/>
         <div className="d-flex justify-content-center align-items-center text-center">
-          <p className="w-100 mb-0">Click To Select Files</p>
+          <p className="w-100 mb-0">Select Files</p>
         </div>
       </div>
-      <button type="button" className="btn btn-outline-primary" onClick={handleSendTrainingFiles}>Import And Prepare Test Data</button>
+      <button type="button" className="btn btn-outline-success" onClick={handleSendTrainingFiles}>Import And Prepare Test Data</button>
     </div>
   );
 }

@@ -16,18 +16,16 @@ function PrepareTrainingDataButton() {
         if (response.ok) {
           const data = await response.json();
           toast.dismiss();
-          toast.success(`Successfully processed and saved ${data.num_processed_writen_instance} objects.` , {
-            duration: 3000
-          });
+          toast.success(`Successfully processed and saved ${data.num_processed_writen_instance} instances.` , {duration: 8000});
         } else {
-          console.error('Error while preparing training data:', response.statusText);
+          console.error('Error while preparing the training data:', response.statusText);
           toast.dismiss();
-          toast.error('Error while preparing training data.');
+          toast.error('Error while preparing the training data.', {duration: 8000});
         }
         } catch (error) {
-          console.error('Error while preparing training data:', error);
+          console.error('Error while preparing the training data:', error);
           toast.dismiss();
-          toast.error('Error while preparing training data.');
+          toast.error('Error while preparing the training data.', {duration: 8000});
         }
   };
 

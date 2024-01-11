@@ -1,0 +1,28 @@
+body {
+    background-image: url("../public/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 90vh;
+    margin: 0;
+    padding: 0;
+  }
+  .table-container {
+    max-height: 780px;
+    width: 800px;
+    overflow-y: auto;
+    margin-top: 40px;
+    font-family: Helvetica;
+  }
+  .btn-group-justified {
+    height: 60px;
+    margin-top: 5px;
+    font-family: Helvetica;
+  }
+  #train-data-button {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+  #test-data-button {
+    margin-left: 25px;
+  }

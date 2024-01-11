@@ -4,16 +4,16 @@ import Select from 'react-select';
 
 interface Props{
   setPredictData: Function,
-  setFirtDay: Function,
+  setFirstDay: Function,
   setNumberOfDays: Function
 }
 
-function TestModelButton({setPredictData, setFirtDay, setNumberOfDays}:Props) {
+function TestModelButton({setPredictData, setFirstDay, setNumberOfDays}:Props) {
 
   const handlePrepareTrainingData = async () => {
     const uploadEndpoint = 'http://localhost:5000/test_model';
     const formData = new FormData();
-    toast.loading('Preparing training data. Please be patient.');
+    toast.loading('Predicting the load. Please be patient.');
     try {
         const response = await fetch(uploadEndpoint, {
           method: 'POST',
@@ -24,18 +24,16 @@ function TestModelButton({setPredictData, setFirtDay, setNumberOfDays}:Props) {
           const data = await response.json();
           setPredictData(data);
           toast.dismiss();
-          toast.success(`Successfully tested model.` , {
-            duration: 3000
-          });
+          toast.success(`Successfully predicted the load. Click on 'Show Predict' button to see the results.` , {duration: 8000});
         } else {
-          console.error('Error while testing model:', response.statusText);
+          console.error('Error while predicting the load:', response.statusText);
           toast.dismiss();
-          toast.error('Error while testing modela.');
+          toast.error('Error while predicting the load.', {duration: 8000});
         }
         } catch (error) {
-          console.error('Error while testing model:', error);
+          console.error('Error while predicting the load:', error);
           toast.dismiss();
-          toast.error('Error while testing model.');
+          toast.error('Error while predicting the load.', {duration: 8000});
         }
   };
 
@@ -58,24 +56,36 @@ function TestModelButton({setPredictData, setFirtDay, setNumberOfDays}:Props) {
                   { value: 6, label: '6' },
                   { value: 7, label: '7' }
                ];
-  
+
   return (
-      <div className="btn-group">
-        <div className="btn btn-outline-primary">
+      <div id="test-data-button" className="btn-group w-90">
+        <div className="w-70 btn btn-outline-warning d-flex justify-content-center align-items-center text-center flex-grow">
           <Select
             options={dates}
-            onChange={(selectedOption) => {setFirtDay(selectedOption)}}
+            onChange={(selectedOption) => {setFirstDay(selectedOption?.value)}}
             isSearchable={false}
             placeholder='Pick a date'
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                minWidth: '161px',
+                border: '5px #ffc107',
+              })}}
           />
           <Select
             options={days}
-            onChange={(selectedOption) => {setNumberOfDays(selectedOption)}}
+            onChange={(selectedOption) => {setNumberOfDays(selectedOption?.value)}}
             isSearchable={false}
-            placeholder='Pick number'
+            placeholder='Pick a number'
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                minWidth: '161px',
+                border: '5px #ffc107',
+              })}}
           />
         </div>
-        <button type="button" className="btn btn-outline-primary" onClick={handlePrepareTrainingData}>Predict</button>
+        <button type="button" className="btn btn-outline-warning" onClick={handlePrepareTrainingData}>Predict</button>
       </div>
     );
 }
