@@ -68,7 +68,7 @@ function TrainDataButton() {
 
 
     return (
-      <div className="btn-group">
+      <div className="btn-group mx-5">
         <div className='btn btn-outline-primary d-flex justify-content-center align-items-center text-center flex-grow'>
           <DatePicker selected={selectedStartDate} onChange={(date) => handleStartDateChange(date)} dateFormat="dd/MM/yyyy"/>
           <DatePicker selected={selectedEndDate} onChange={(date) => handleEndDateChange(date)} dateFormat="dd/MM/yyyy"/>

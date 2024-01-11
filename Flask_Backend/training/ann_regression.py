@@ -16,9 +16,8 @@ class AnnRegression(AnnBase):
         model.add(Dense(1, kernel_initializer=self.kernel_initializer))        
         return model
 
-    def get_model_from_path(self, path):
-        model = keras.models.load_model(path)
-        return model
+    def use_model_from_path(self):
+        self.model = keras.models.load_model(self.__modelName)
 
     def compile_and_fit(self, trainX, trainY):
         self.model = self.get_model()
@@ -27,18 +26,11 @@ class AnnRegression(AnnBase):
         self.model.fit(trainX, trainY, epochs=self.epoch_number, batch_size=self.batch_size_number, verbose=self.verbose)
         self.model.save(self.__modelName)
 
-    def use_current_model(self, trainX):
-        self.trainX = trainX
-        self.model = self.get_model_from_path(self.__modelName)
-
     def get_predict(self, testX):
-        trainPredict = self.model.predict(self.trainX)
-        testPredict = self.model.predict(testX)
-        return trainPredict, testPredict
+        return self.model.predict(testX)
 
     def compile_fit_predict(self, trainX, trainY, testX):
         self.compile_and_fit(trainX, trainY)
-        #self.use_current_model(trainX)
         return self.get_predict(testX)
 
     def set_model_name(self, modelName):

@@ -49,7 +49,7 @@ def upload_and_prepare_test_files():
 @app.route('/test_model', methods=['POST'])
 def test_model():
     response = SERVICE.test_model()
-    return jsonify({"response": response})
+    return jsonify(response)
 
 
 if __name__ == "__main__":

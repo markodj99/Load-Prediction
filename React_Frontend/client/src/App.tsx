@@ -2,6 +2,7 @@ import PrepareTrainingDataButton from "./components/PrepareTrainingDataButton";
 import ImportTrainingDataButton from "./components/ImportTrainingDataButton";
 import TrainModelButton from "./components/TrainModelButton";
 import ImportAndPrepareTestDataButton from "./components/ImportAndPrepareTestDataButton";
+import TestModelButton from "./components/TestModelButton";
 import 'bootstrap/dist/css/bootstrap.css';
 import { Toaster } from "react-hot-toast";
 
@@ -13,7 +14,7 @@ function App()
       <PrepareTrainingDataButton/>
       <TrainModelButton/>
       <ImportAndPrepareTestDataButton/>
-      <button> new </button>
+      <TestModelButton/>
       <Toaster/>
     </div>
   );

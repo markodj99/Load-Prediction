@@ -1,10 +1,10 @@
-import numpy
+import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 
 class Preparer:
     
-    def __init__(self, data_frame, number_of_columns, share_for_training):
+    def __init__(self, data_frame, number_of_columns, share_for_training=0.80):
         self.scaler = MinMaxScaler(feature_range=(0, 1))
 
         self.dataset_values = data_frame.values
@@ -13,7 +13,7 @@ class Preparer:
         self.number_of_columns = number_of_columns
         self.predictor_column_no = self.number_of_columns - 1
         self.share_for_training = share_for_training
-
+    
     def prepare_for_training(self):
         dataset = self.scaler.fit_transform(self.dataset_values)
 
@@ -23,8 +23,8 @@ class Preparer:
         trainX, trainY = self.create_dataset(train, self.number_of_columns)
         testX, testY = self.create_dataset(test, self.number_of_columns)
 
-        trainX = numpy.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
-        testX = numpy.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
+        trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
+        testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
 
         self.trainX = trainX
         self.trainY = trainY
@@ -34,20 +34,20 @@ class Preparer:
         return trainX.copy(), trainY.copy(), testX.copy(), testY.copy()
 
     def inverse_transform(self, train_predict, test_predict):
-        train_predict = numpy.reshape(train_predict, (train_predict.shape[0], train_predict.shape[1]))
-        test_predict = numpy.reshape(test_predict, (test_predict.shape[0], test_predict.shape[1]))
+        train_predict = np.reshape(train_predict, (train_predict.shape[0], train_predict.shape[1]))
+        test_predict = np.reshape(test_predict, (test_predict.shape[0], test_predict.shape[1]))
 
-        self.trainX = numpy.reshape(self.trainX, (self.trainX.shape[0], self.trainX.shape[2]))
-        self.testX = numpy.reshape(self.testX, (self.testX.shape[0], self.testX.shape[2]))
+        self.trainX = np.reshape(self.trainX, (self.trainX.shape[0], self.trainX.shape[2]))
+        self.testX = np.reshape(self.testX, (self.testX.shape[0], self.testX.shape[2]))
 
-        trainXAndPredict = numpy.concatenate((self.trainX, train_predict),axis=1)
-        testXAndPredict = numpy.concatenate((self.testX, test_predict),axis=1)
+        trainXAndPredict = np.concatenate((self.trainX, train_predict),axis=1)
+        testXAndPredict = np.concatenate((self.testX, test_predict),axis=1)
 
-        trainY = numpy.reshape(self.trainY, (self.trainY.shape[0], 1))
-        testY = numpy.reshape(self.testY, (self.testY.shape[0], 1))
+        trainY = np.reshape(self.trainY, (self.trainY.shape[0], 1))
+        testY = np.reshape(self.testY, (self.testY.shape[0], 1))
 
-        trainXAndY = numpy.concatenate((self.trainX, trainY),axis=1)
-        testXAndY = numpy.concatenate((self.testX, testY),axis=1)
+        trainXAndY = np.concatenate((self.trainX, trainY),axis=1)
+        testXAndY = np.concatenate((self.testX, testY),axis=1)
 
         trainXAndPredict = self.scaler.inverse_transform(trainXAndPredict)
         trainXAndY = self.scaler.inverse_transform(trainXAndY)
@@ -61,7 +61,7 @@ class Preparer:
         testY = testXAndY[:,self.predictor_column_no]
 
         return train_predict, trainY, test_predict, testY
-
+    
     def create_dataset(self, dataset, look_back):
         dataX, dataY = [], []
 
@@ -70,5 +70,41 @@ class Preparer:
             dataX.append(a)
             dataY.append(dataset[i, look_back - 1])
 
-        return numpy.array(dataX), numpy.array(dataY)
+        return np.array(dataX), np.array(dataY)
+
+    def prepare_for_predict(self):
+        normalized_data = self.scaler.transform(self.dataset_values)
+
+        testX = self.create_dataset_for_predict(normalized_data, self.number_of_columns)
+        testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
+        self.testX = testX
+
+        return testX.copy()
+
+    def inverse_transform_predict(self, test_predict):
+        test_predict = np.reshape(test_predict, (test_predict.shape[0], test_predict.shape[1]))
+        self.testX = np.reshape(self.testX, (self.testX.shape[0], self.testX.shape[2]))
+
+        testXAndPredict = np.concatenate((self.testX, test_predict),axis=1)
+        testXAndPredict = self.scaler.inverse_transform(testXAndPredict)
+
+        test_predict = testXAndPredict[:,self.predictor_column_no]
+
+        return test_predict
+
+    def create_dataset_for_predict(self, dataset, look_back):
+        dataX = []
+
+        for i in range(len(dataset)):
+            a = dataset[i, 0:look_back - 1]
+            dataX.append(a)
+
+        return np.array(dataX)
+
+    def fit_min_max_scaler(self):
+        self.scaler.fit(self.dataset_values)
+
+    def init_for_predict(self, data_frame):
+        self.dataset_values = data_frame.values
+        self.dataset_values = self.dataset_values.astype('float32')
 

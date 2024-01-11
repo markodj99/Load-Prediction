@@ -10,7 +10,7 @@ class DataBaseService():
         self.__test_data_base_name = test_data_base_name
         self.__test_score_data_base_name = test_score_data_base_name
 
-    def save_processed_test_data(self, data_frame):
+    def save_processed_train_data(self, data_frame):
         connection = sqlite3.connect(self.__train_data_base_name)
         data_frame.to_sql(name='Load', con=connection, if_exists='replace')
         connection.close()
@@ -55,10 +55,38 @@ class DataBaseService():
         conn.close()
 
 
-    def save_processed_train_data(self, data_frame):
+    def save_processed_test_data(self, data_frame):
         connection = sqlite3.connect(self.__test_data_base_name)
         data_frame.to_sql(name='Load', con=connection, if_exists='replace')
         connection.close()
 
         return data_frame.shape[0]
+
+    def load_last_day(self):
+        dates = ("2021-09-06 00:00:00", "2021-09-06 23:00:00")
+        query = f"""
+                    SELECT date, avg_temp, load
+                    FROM Load
+                    WHERE date >= '{dates[0]}' AND date <= '{dates[1]}';
+                 """
+        
+        connection = sqlite3.connect(self.__train_data_base_name)
+        data_frame = pd.read_sql_query(query, connection)
+        connection.close()
+
+        return data_frame
+    
+    def load_test_data(self):
+        query = f"""
+                    SELECT *
+                    FROM Load;
+                """
+
+        connection = sqlite3.connect(self.__test_data_base_name)
+        data_frame = pd.read_sql_query(query, connection)
+        connection.close()
+
+        data_frame = data_frame.drop('index', axis=1)
+
+        return data_frame
 

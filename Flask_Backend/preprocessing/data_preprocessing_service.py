@@ -32,19 +32,17 @@ class DataProcessingService():
         test_data_frame = self.__create_day_type_column(test_data_frame)
         test_data_frame = self.__normalize_missing_value(test_data_frame)
 
-        load_day_before = pd.Series([-1] * len(test_data_frame), name='load_day_before')
+        load_day_before = pd.Series([-1.0] * len(test_data_frame), name='load_day_before')
         test_data_frame.insert(14, 'load_day_before', load_day_before)
         
         test_data_frame = self.__create_hour_column(test_data_frame)
         test_data_frame = self.__create_avg_temperature_column(test_data_frame)
-        
-        avg_temp_day_before = pd.Series([-1] * len(test_data_frame), name='avg_temp_day_before')
-        test_data_frame.insert(13, 'avg_temp_day_before', avg_temp_day_before)
+        test_data_frame = self.__create_avg_temperature_day_before_column(test_data_frame)
 
-        avg_load_day_before = pd.Series([-1] * len(test_data_frame), name='avg_load_day_before')
+        avg_load_day_before = pd.Series([-1.0] * len(test_data_frame), name='avg_load_day_before')
         test_data_frame.insert(19, 'avg_load_day_before', avg_load_day_before)
 
-        load = pd.Series([-1] * len(test_data_frame), name='load')
+        load = pd.Series([5833.16162044424] * len(test_data_frame), name='load')
         test_data_frame['load'] = load
 
         return test_data_frame

@@ -32,7 +32,7 @@ function PrepareTrainingDataButton() {
   };
 
   return (
-      <button type="button" className="btn btn-outline-primary mx-5" onClick={handlePrepareTrainingData}>Prepare Training Data</button>
+      <button type="button" className="btn btn-outline-primary" onClick={handlePrepareTrainingData}>Prepare Training Data</button>
     );
 }
 
