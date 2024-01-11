@@ -78,13 +78,13 @@ class InvokerService():
         test_data_frame_segments = self.__model_service.test_model(last_day_train_data_frame, train_data_frame, test_data_frame)
 
         predicted_load = {
-            'monday': [test_data_frame_segments[0]['load'].tolist()],
-            'tuesday': [test_data_frame_segments[1]['load'].tolist()],
-            'wednesday': [test_data_frame_segments[2]['load'].tolist()],
-            'thursday': [test_data_frame_segments[3]['load'].tolist()],
-            'friday': [test_data_frame_segments[4]['load'].tolist()],
-            'saturday': [test_data_frame_segments[5]['load'].tolist()],
-            'sunday': [test_data_frame_segments[6]['load'].tolist()]
+            'day1': {'date':[test_data_frame_segments[0]['date'].tolist()], 'load':[test_data_frame_segments[0]['load'].tolist()]},
+            'day2': {'date':[test_data_frame_segments[1]['date'].tolist()], 'load':[test_data_frame_segments[1]['load'].tolist()]},
+            'day3': {'date':[test_data_frame_segments[2]['date'].tolist()], 'load':[test_data_frame_segments[2]['load'].tolist()]},
+            'day4': {'date':[test_data_frame_segments[3]['date'].tolist()], 'load':[test_data_frame_segments[3]['load'].tolist()]},
+            'day5': {'date':[test_data_frame_segments[4]['date'].tolist()], 'load':[test_data_frame_segments[4]['load'].tolist()]},
+            'day6': {'date':[test_data_frame_segments[5]['date'].tolist()], 'load':[test_data_frame_segments[5]['load'].tolist()]},
+            'day7': {'date':[test_data_frame_segments[6]['date'].tolist()], 'load':[test_data_frame_segments[6]['load'].tolist()]}
         }
 
         test_data_frame = pd.concat(test_data_frame_segments, ignore_index=True)

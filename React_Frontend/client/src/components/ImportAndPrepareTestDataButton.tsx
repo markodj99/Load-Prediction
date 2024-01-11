@@ -48,7 +48,7 @@ function ImportAndPrepareTestDataButton() {
   };
 
   return (
-    <div className="btn-group">
+    <div className="btn-group mx-5">
       <div {...getRootProps({className: 'btn btn-outline-primary dropzone', type:'button'})}>
         <input {...getInputProps()} directory="" webkitdirectory="" type="file"/>
         <div className="d-flex justify-content-center align-items-center text-center">
