@@ -26,7 +26,17 @@ function TrainDataButton() {
                               MAPE Train: ${data.train_score_mape.toFixed(2)}%
                               MAPE Test: ${data.test_score_mape.toFixed(2)}%
                               RMSE Train: ${data.train_score_rmse.toFixed(2)}
-                              RMSE Test: ${data.test_score_rmse.toFixed(2)}`, {duration: 12000});
+                              RMSE Test: ${data.test_score_rmse.toFixed(2)}`,
+                              {style: {
+                                        border: '2px solid black',
+                                        background: 'green',
+                                        width: '500px',
+                                        height: '200px',
+                                        fontSize: "20px",
+                                        color: "black"
+                                      },
+                                duration: 12000
+                              });
           } else {
             console.error('Error while training a model:', response.statusText);
             toast.dismiss();
@@ -68,6 +78,7 @@ function TrainDataButton() {
       <div id="train-data-button" className="btn-group w-25">
         <div className="w-50 btn btn-outline-info d-flex justify-content-center align-items-center text-center flex-grow">
           <DatePicker className="w-100" selected={selectedStartDate} onChange={(date) => handleStartDateChange(date)} dateFormat="dd/MM/yyyy"/>
+          <div className="mx-1"/>
           <DatePicker className="w-100" selected={selectedEndDate} onChange={(date) => handleEndDateChange(date)} dateFormat="dd/MM/yyyy"/>
         </div>
         <button type="button" className="w-30 btn btn-outline-info" onClick={handleTrainData}>Train Model</button>

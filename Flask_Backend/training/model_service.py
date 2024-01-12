@@ -71,7 +71,7 @@ class ModelService():
 
             preparer.init_for_predict(test_data_frame)
             test_data = preparer.prepare_for_predict()
-            test_predict = ann_regression.get_predict(test_data)
+            test_predict = ann_regression.get_test_predict(test_data)
             test_predict = preparer.inverse_transform_predict(test_predict)
             
             data_frame_segments[i]['load'] = test_predict

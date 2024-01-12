@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
-
 from service import InvokerService
 
 app = Flask(__name__)
@@ -13,10 +12,10 @@ SERVICE = InvokerService(load_data_path=os.path.join(app.root_path, 'raw_trainin
                          weather_data_path=os.path.join(app.root_path, 'raw_training_data', 'weather_data'), 
                          holidays_data_path=os.path.join(app.root_path, 'raw_training_data', 'holidays_data'),
                          test_data_path=os.path.join(app.root_path, 'raw_test_data'),
+                         output_path=os.path.join(app.root_path, 'output'),
                          train_data_base_name='database/trainDataDb.db',
                          train_score_data_base_name='database/modelTrainScoreDb.db',
                          test_data_base_name='database/testDataDb.db',
-                         test_score_data_base_name='database/modelTestScoreDb.db',
                          model_name='e120bs1_new',
                          share_for_training=0.8,
                          epoch_number=120)

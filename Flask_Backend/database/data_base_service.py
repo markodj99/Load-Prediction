@@ -4,11 +4,10 @@ import pandas as pd
 
 class DataBaseService():
 
-    def __init__(self, train_data_base_name, train_score_data_base_name, test_data_base_name, test_score_data_base_name):
+    def __init__(self, train_data_base_name, train_score_data_base_name, test_data_base_name):
         self.__train_data_base_name = train_data_base_name
         self.__train_score_data_base_name = train_score_data_base_name
         self.__test_data_base_name = test_data_base_name
-        self.__test_score_data_base_name = test_score_data_base_name
 
     def save_processed_train_data(self, data_frame):
         connection = sqlite3.connect(self.__train_data_base_name)

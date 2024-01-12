@@ -26,12 +26,17 @@ class AnnRegression(AnnBase):
         self.model.fit(trainX, trainY, epochs=self.epoch_number, batch_size=self.batch_size_number, verbose=self.verbose)
         self.model.save(self.__modelName)
 
-    def get_predict(self, testX):
+    def get_test_predict(self, testX):
         return self.model.predict(testX)
+    
+    def get_train_predict(self, testX):
+        trainPredict = self.model.predict(self.trainX)
+        testPredict = self.model.predict(testX)
+        return trainPredict, testPredict
 
     def compile_fit_predict(self, trainX, trainY, testX):
         self.compile_and_fit(trainX, trainY)
-        return self.get_predict(testX)
+        return self.get_train_predict(testX)
 
     def set_model_name(self, modelName):
         self.__modelName = f"models/{modelName}"

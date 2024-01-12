@@ -48,11 +48,22 @@ function PredictTable({predictData, firstDay, numberOfDays}: Props)
             }
         }
     }
-    
+
+    const getFormatedDate = (dateString:string) => {
+        let date = new Date(dateString);
+        
+        let day = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+        let month = date.getMonth() < 9 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+        let hour = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`;
+        let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
+
+        return `${day}.${month}.${date.getFullYear()}. ${hour}.${minutes} h`;
+    };
+
     const displayData = unpackedData.date.map((date, idx) => (
         <tr key={idx} className="table-dark">
             <th scope="row">{idx + 1}</th>
-            <td>{date.slice(0, -3)} h</td>
+            <td>{getFormatedDate(date.slice(0, -3))}</td>
             <td>{unpackedData.load[idx].toFixed(2)}</td>
         </tr>
     ));

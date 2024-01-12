@@ -72,6 +72,7 @@ function TestModelButton({setPredictData, setFirstDay, setNumberOfDays}:Props) {
                 border: '5px #ffc107',
               })}}
           />
+          <div className="mx-1"/>
           <Select
             options={days}
             onChange={(selectedOption) => {setNumberOfDays(selectedOption?.value)}}
