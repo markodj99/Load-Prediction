@@ -3,10 +3,12 @@ from flask_cors import CORS
 import os
 from service import InvokerService
 
+
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024
 app.config['REQUEST_TIMEOUT'] = 30
 CORS(app, origins="http://localhost:3000")
+
 
 SERVICE = InvokerService(load_data_path=os.path.join(app.root_path, 'raw_training_data', 'load_data'), 
                          weather_data_path=os.path.join(app.root_path, 'raw_training_data', 'weather_data'), 
@@ -16,9 +18,9 @@ SERVICE = InvokerService(load_data_path=os.path.join(app.root_path, 'raw_trainin
                          train_data_base_name='database/trainDataDb.db',
                          train_score_data_base_name='database/modelTrainScoreDb.db',
                          test_data_base_name='database/testDataDb.db',
-                         model_name='testtest',
-                         share_for_training=0.8,
-                         epoch_number=20)
+                         model_name='e150bs1_new_sft_085',
+                         share_for_training=0.85,
+                         epoch_number=150)
 
 
 @app.route('/upload_training_files', methods=['POST'])
