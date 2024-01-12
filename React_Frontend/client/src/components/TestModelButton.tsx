@@ -9,13 +9,11 @@ interface Props{
 }
 
 function TestModelButton({setPredictData, setFirstDay, setNumberOfDays}:Props) {
-
   const handlePrepareTrainingData = async () => {
-    const uploadEndpoint = 'http://localhost:5000/test_model';
     const formData = new FormData();
     toast.loading('Predicting the load. Please be patient.');
     try {
-        const response = await fetch(uploadEndpoint, {
+        const response = await fetch('/test_model', {
           method: 'POST',
           body: formData,
         });

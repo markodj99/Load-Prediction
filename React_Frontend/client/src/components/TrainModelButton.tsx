@@ -5,50 +5,65 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function TrainDataButton() {
+  const getTotalTime = (seconds: number) => {
+    let result = '';
+    seconds = Math.round(seconds);
+    
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    
+    result += hours > 0 ? `${hours}h` : `0h`;
+    result += minutes > 0 ? `, ${minutes}m` : `, 0m`;
+    result += remainingSeconds > 0 ? ` and ${remainingSeconds}s` : result += ` and 0s`;
 
-    const handleTrainData = async () => {
-      const uploadEndpoint = 'http://localhost:5000/train_model';
-      const formData = new FormData();
-      formData.append('startDate', selectedStartDate.toISOString());
-      formData.append('endDate', selectedEndDate.toISOString());
+    return result;
+  };
 
-      toast.loading('Training the model. Please be patient. This might take a while.');
-      try {
-          const response = await fetch(uploadEndpoint, {
-            method: 'POST',
-            body: formData,
-          });
+  const handleTrainData = async () => {
+    const formData = new FormData();
+    formData.append('startDate', selectedStartDate.toISOString());
+    formData.append('endDate', selectedEndDate.toISOString());
 
-          if (response.ok) {
-            const data = await response.json();
-            toast.dismiss();
-            toast.success(`Successfully trained the new model.
-                              MAPE Train: ${data.train_score_mape.toFixed(2)}%
-                              MAPE Test: ${data.test_score_mape.toFixed(2)}%
-                              RMSE Train: ${data.train_score_rmse.toFixed(2)}
-                              RMSE Test: ${data.test_score_rmse.toFixed(2)}`,
-                              {style: {
-                                        border: '2px solid black',
-                                        background: 'green',
-                                        width: '500px',
-                                        height: '200px',
-                                        fontSize: "20px",
-                                        color: "black"
-                                      },
-                                duration: 12000
-                              });
-          } else {
-            console.error('Error while training a model:', response.statusText);
-            toast.dismiss();
-            toast.error('Error while training a model.', {duration: 8000});
-          }
-          } catch (error) {
-            console.error('Error while training a model:', error);
-            toast.dismiss();
-            toast.error('Error while training a model.', {duration: 8000});
-          }
+    toast.loading('Training the model. Please be patient. This might take a while.');
+    try {
+        const response = await fetch('/train_model', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          toast.dismiss();
+          toast.success(`Successfully trained the new model.
+                         It took ${getTotalTime(data.seconds)} to train the new model.
+                         MAPE Train: ${data.train_score_mape.toFixed(2)}%
+                         MAPE Test: ${data.test_score_mape.toFixed(2)}%
+                         RMSE Train: ${data.train_score_rmse.toFixed(2)}
+                         RMSE Test: ${data.test_score_rmse.toFixed(2)}`,
+                         {
+                          style: {
+                                    border: '2px solid black',
+                                    background: 'green',
+                                    width: '500px',
+                                    height: '250px',
+                                    fontSize: "20px",
+                                    color: "black"
+                                  },
+                          duration: 12000
+                         });
+        } else {
+          console.error('Error while training the model:', response.statusText);
+          toast.dismiss();
+          toast.error('Error while training the model.', {duration: 8000});
+        }
+        } catch (error) {
+          console.error('Error while training the model:', error);
+          toast.dismiss();
+          toast.error('Error while training the model.', {duration: 8000});
+        }
     };
-  
+
     const defaultStartDate = new Date('2018-01-02');
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(defaultStartDate);
 

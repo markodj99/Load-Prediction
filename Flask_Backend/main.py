@@ -16,9 +16,9 @@ SERVICE = InvokerService(load_data_path=os.path.join(app.root_path, 'raw_trainin
                          train_data_base_name='database/trainDataDb.db',
                          train_score_data_base_name='database/modelTrainScoreDb.db',
                          test_data_base_name='database/testDataDb.db',
-                         model_name='e120bs1_new',
+                         model_name='testtest',
                          share_for_training=0.8,
-                         epoch_number=120)
+                         epoch_number=20)
 
 
 @app.route('/upload_training_files', methods=['POST'])
@@ -35,8 +35,8 @@ def prepare_training_data():
 
 @app.route('/train_model', methods=['POST'])
 def train_model():
-    trsm, tssm, trsr, tssr  = SERVICE.train_model(request.form.get('startDate')[:10], request.form.get('endDate')[:10])
-    return {"train_score_mape": trsm, "test_score_mape": tssm, "train_score_rmse": trsr, "test_score_rmse": tssr}
+    trsm, tssm, trsr, tssr, tt  = SERVICE.train_model(request.form.get('startDate')[:10], request.form.get('endDate')[:10])
+    return {"train_score_mape": trsm, "test_score_mape": tssm, "train_score_rmse": trsr, "test_score_rmse": tssr, "seconds": tt}
 
 
 @app.route('/upload_and_prepare_test_files', methods=['POST'])

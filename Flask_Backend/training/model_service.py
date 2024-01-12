@@ -26,8 +26,9 @@ class ModelService():
         time_begin = time.time()
         trainPredict, testPredict = ann_regression.compile_fit_predict(trainX, trainY, testX)
         time_end = time.time()
+        total_time = time_end - time_begin
 
-        print('Training duration: ' + str((time_end - time_begin)) + ' seconds')
+        print('Training duration: ' + str(total_time) + ' seconds')
 
         trainPredict, trainY, testPredict, testY = preparer.inverse_transform(trainPredict, testPredict)
 
@@ -41,7 +42,7 @@ class ModelService():
         print('Train Score: %.2f RMSE' % (trainScoreRmse))
         print('Test Score: %.2f RMSE' % (testScoreRmse))
 
-        return trainScoreMape, testScoreMape, trainScoreRmse, testScoreRmse
+        return trainScoreMape, testScoreMape, trainScoreRmse, testScoreRmse, total_time
 
     def test_model(self, last_day_train_data_frame, train_data_frame, test_data_frame):
         number_of_columns = test_data_frame.shape[1] - 3

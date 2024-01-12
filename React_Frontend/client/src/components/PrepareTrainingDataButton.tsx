@@ -2,13 +2,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import toast from 'react-hot-toast';
 
 function PrepareTrainingDataButton() {
-
   const handlePrepareTrainingData = async () => {
-    const uploadEndpoint = 'http://localhost:5000/prepare_training_data';
     const formData = new FormData();
     toast.loading('Preparing training data. Please be patient.');
     try {
-        const response = await fetch(uploadEndpoint, {
+        const response = await fetch('/prepare_training_data', {
           method: 'POST',
           body: formData,
         });

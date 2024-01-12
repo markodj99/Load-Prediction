@@ -15,7 +15,6 @@ function ImportTrainingDataButton() {
   });
 
   const handleSendTrainingFiles = async () => {
-    const uploadEndpoint = 'http://localhost:5000/upload_training_files';
     toast.loading("Importing files.");
   
     const formData = new FormData();
@@ -28,7 +27,7 @@ function ImportTrainingDataButton() {
     for(let i = 0; i < 10; i++)
     {
       try {
-        const response = await fetch(uploadEndpoint, {
+        const response = await fetch('/upload_training_files', {
           method: 'POST',
           body: formDataChunks[i],
         });

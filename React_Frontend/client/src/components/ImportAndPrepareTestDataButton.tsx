@@ -15,7 +15,6 @@ function ImportAndPrepareTestDataButton() {
   });
 
   const handleSendTrainingFiles = async () => {
-    const uploadEndpoint = 'http://localhost:5000/upload_and_prepare_test_files';
     toast.loading("Importing and preparing files.");
   
     const formData = new FormData();
@@ -24,7 +23,7 @@ function ImportAndPrepareTestDataButton() {
     });
 
     try {
-    const response = await fetch(uploadEndpoint, {
+    const response = await fetch('/upload_and_prepare_test_files', {
         method: 'POST',
         body: formData,
     });

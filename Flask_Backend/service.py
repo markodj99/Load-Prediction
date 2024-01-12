@@ -57,10 +57,10 @@ class InvokerService():
         if datetime.strptime(start_date, '%Y-%m-%d') > datetime.strptime(end_date, '%Y-%m-%d'): start_date, end_date = '2018-01-02', '2021-09-06'
     
         data_frame = self.__data_base_service.load_training_data(start_date, end_date)
-        train_score_mape, test_score_mape, train_score_rmse, test_score_rmse = self.__model_service.train_new_model(data_frame)
+        train_score_mape, test_score_mape, train_score_rmse, test_score_rmse, total_time = self.__model_service.train_new_model(data_frame)
         self.__data_base_service.save_train_model_score(self.__model_name, train_score_mape, test_score_mape, train_score_rmse, test_score_rmse)
 
-        return train_score_mape, test_score_mape, train_score_rmse, test_score_rmse
+        return train_score_mape, test_score_mape, train_score_rmse, test_score_rmse, total_time
 
     def upload_and_prepare_test_files(self, files):
         self.__upload_test_files(files)
