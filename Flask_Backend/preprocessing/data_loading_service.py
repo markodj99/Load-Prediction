@@ -27,7 +27,7 @@ class DataLoaderService():
         holidays_data_frame = self.__load_holidays()
 
         combined_data_frame = pd.merge_asof(weather_data_frame, load_data_frame, on='date', direction='backward', tolerance=pd.Timedelta('0m'))
-        combined_data_frame = combined_data_frame[combined_data_frame['load'].notna()]
+        #combined_data_frame = combined_data_frame[combined_data_frame['load'].notna()]
         combined_data_frame = combined_data_frame.reset_index(drop=True)
 
         combined_data_frame = self.__remove_holidays(combined_data_frame, holidays_data_frame)

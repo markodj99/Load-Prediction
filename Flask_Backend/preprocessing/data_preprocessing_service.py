@@ -26,7 +26,7 @@ class DataProcessingService():
     def get_processed_test_data(self, test_data_frame):
         test_data_frame = self.__remove_duplicates(test_data_frame)
         test_data_frame = self.__drop_weather_features(test_data_frame)
-        test_data_frame = self.__interpolate_missing_values(test_data_frame)
+        test_data_frame = self.__interpolate_missing_values(test_data_frame, False)
         test_data_frame = self.__fill_missing_temperature(test_data_frame)
         test_data_frame = self.__create_month_column(test_data_frame)
         test_data_frame = self.__create_day_type_column(test_data_frame)
@@ -42,7 +42,7 @@ class DataProcessingService():
         avg_load_day_before = pd.Series([-1.0] * len(test_data_frame), name='avg_load_day_before')
         test_data_frame.insert(19, 'avg_load_day_before', avg_load_day_before)
 
-        load = pd.Series([5833.16162044424] * len(test_data_frame), name='load')
+        load = pd.Series([5825.0788936801] * len(test_data_frame), name='load')
         test_data_frame['load'] = load
 
         return test_data_frame
@@ -62,11 +62,14 @@ class DataProcessingService():
 
         return data_frame
 
-    def __interpolate_missing_values(self, data_frame):
+    def __interpolate_missing_values(self, data_frame, interpolate_load = True):
         data_frame['windspeed'] = data_frame['windspeed'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
         data_frame['humidity'] = data_frame['humidity'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
         data_frame['cloudcover'] = data_frame['cloudcover'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
         data_frame['solarradiation'] = data_frame['solarradiation'].fillna(0)
+
+        if interpolate_load:
+            data_frame['load'] = data_frame['load'].astype(float).interpolate(method="slinear", fill_value="extrapolate", limit_direction="both")
 
         return data_frame
 
