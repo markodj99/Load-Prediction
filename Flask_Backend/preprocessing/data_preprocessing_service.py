@@ -45,6 +45,9 @@ class DataProcessingService():
         load = pd.Series([5825.0788936801] * len(test_data_frame), name='load')
         test_data_frame['load'] = load
 
+        test_data_frame = test_data_frame.drop('icon', axis=1)
+        test_data_frame = test_data_frame.drop('stations', axis=1)
+
         return test_data_frame
 
     def __remove_duplicates(self, data_frame):

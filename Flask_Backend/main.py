@@ -15,12 +15,12 @@ SERVICE = InvokerService(load_data_path=os.path.join(app.root_path, 'raw_trainin
                          holidays_data_path=os.path.join(app.root_path, 'raw_training_data', 'holidays_data'),
                          test_data_path=os.path.join(app.root_path, 'raw_test_data'),
                          output_path=os.path.join(app.root_path, 'output'),
-                         train_data_base_name='database/train_data_db_old.db',
+                         train_data_base_name='database/train_data_db.db',
                          train_score_data_base_name='database/model_train_score_db.db',
                          test_data_base_name='database/test_data_db.db',
-                         model_name='e200bs1_new_sft_085_2',
+                         model_name='e120bs1_new_sft_085',
                          share_for_training=0.85,
-                         epoch_number=200)
+                         epoch_number=150)
 
 
 @app.route('/upload_training_files', methods=['POST'])

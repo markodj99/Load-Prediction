@@ -43,7 +43,7 @@ function ImportTrainingDataButton() {
       } catch (error) {
         console.error('Error while uploading the files:', error);
         toast.dismiss();
-        toast.error('Error while uploading thefiles.', {duration: 8000});
+        toast.error('Error while uploading the files.', {duration: 8000});
       }
     }
 
